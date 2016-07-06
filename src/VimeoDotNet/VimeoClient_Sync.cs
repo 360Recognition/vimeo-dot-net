@@ -357,6 +357,18 @@ namespace VimeoDotNet
             }
         }
 
+        public void AddTagToVideo(long clipId, string tag)
+        {
+            try
+            {
+                AddTagToVideoAsync(clipId, tag).RunSynchronouslyWithCurrentCulture();
+            }
+            catch (AggregateException ex)
+            {
+                ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+            }
+        }
+
         #endregion
 
         #region Upload

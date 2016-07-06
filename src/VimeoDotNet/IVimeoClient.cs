@@ -39,8 +39,11 @@ namespace VimeoDotNet
         Video GetUserAlbumVideo(long userId, long albumId, long clipId);
         Task<Video> GetUserAlbumVideoAsync(long userId, long albumId, long clipId);
 
-		// Update Video Metadata
-		void UpdateVideoMetadata(long clipId, VideoUpdateMetadata metaData);
+        void AddTagToVideo(long clipId, string tag);
+        Task AddTagToVideoAsync(long clipId, string tag);
+
+        // Update Video Metadata
+        void UpdateVideoMetadata(long clipId, VideoUpdateMetadata metaData);
 		Task UpdateVideoMetadataAsync(long clipId, VideoUpdateMetadata metaData);
 
 		// Uploading Files

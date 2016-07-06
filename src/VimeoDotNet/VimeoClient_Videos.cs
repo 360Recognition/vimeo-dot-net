@@ -281,6 +281,24 @@ namespace VimeoDotNet
             }
         }
 
+        public async Task AddTagToVideoAsync(long clipId, string tag)
+        {
+            try
+            {
+                IApiRequest request = GenerateAddTagRequest(clipId, tag);
+                IRestResponse response = await request.ExecuteRequestAsync();
+                CheckStatusCodeError(response, "Error adding tag to video.");
+            }
+            catch (Exception ex)
+            {
+                if (ex is VimeoApiException)
+                {
+                    throw;
+                }
+                throw new VimeoApiException("Error tagging video.", ex);
+            }
+        }
+
         private IApiRequest GenerateVideosRequest(long? userId = null, long? clipId = null, int? page = null, int? perPage = null, string query = null)
         {
             ThrowIfUnauthorized();
@@ -417,6 +435,20 @@ namespace VimeoDotNet
 
             request.UrlSegments.Add("clipId", clipId.ToString());
             request.UrlSegments.Add("domain", domain);
+
+            return request;
+        }
+
+        private IApiRequest GenerateAddTagRequest(long clipId, string tag)
+        {
+            ThrowIfUnauthorized();
+
+            IApiRequest request = _apiRequestFactory.GetApiRequest(AccessToken);
+            request.Method = Method.PUT;
+            request.Path = Endpoints.VideoTag;
+
+            request.UrlSegments.Add("clipId", clipId.ToString());
+            request.UrlSegments.Add("tag", tag);
 
             return request;
         }
